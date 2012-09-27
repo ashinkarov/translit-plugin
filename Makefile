@@ -25,8 +25,10 @@ INCLUDE := -I/usr/include/libpurple \
 	   -I/usr/include/atk-1.0 \
 	   -I/usr/include/gdk-pixbuf-2.0
 
-DETRANS_DEPS :=  ru-replacement.def ru-special-words.def ru-capital-letters.def trie.h
-TRIE_DEPS    :=  trie.h
+DETRANS_DEPS  :=  ru-replacement.def ru-special-words.def \
+		  ru-capital-letters.def trie.h detrans.h
+TRIE_DEPS     :=  trie.h
+TRANSLIT_DEPS :=  detrans.h
 
 all: trans
 
@@ -47,6 +49,7 @@ trans: $(BINARY).so
 	$(CC) $(INCLUDE) -D_GNU_SOURCE  -D_BSD_SOURCE -fpic -O3 -std=c99 \
 	-Wall -Wextra  -pedantic -c -o $@ $<
 
+translit.o: $(TRANSLIT_DEPS)
 detrans.o: $(DETRANS_DEPS)
 trie.o: $(TRIE_DEPS)
 $(BINARY).so: translit.o detrans.o trie.o

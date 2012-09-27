@@ -22,10 +22,7 @@
 #define PLUGIN_ID                "translit-plugin"
 #define PLUGIN_STATIC_NAME       "TRANS"
 #define PLUGIN_AUTHOR            "Artem Shinkarov <artyom.shinkaroff@gmail.com>"
-
 #define PREFS_PREFIX             "/plugins/core/" PLUGIN_ID
-#define PREFS_AUTO               PREFS_PREFIX "/auto"
-#define PREFS_BUDDIES            PREFS_PREFIX "/buddies"
 
 #include <util.h>
 #include <string.h>
@@ -38,12 +35,12 @@
 
 #include "pidgin.h"
 
-
 #include "gtkplugin.h"
 #include "gtkprefs.h"
 #include "gtkutils.h"
 #include "gtkconvwin.h"
 
+#include "detrans.h"
 
 #define __unused __attribute__ ((unused))
 
@@ -64,9 +61,9 @@ error_notify (PurpleConversation * conv, gchar * message)
     }
 }
 
-/* Detransliteration callback
-     If a person is in the detransliteration list then each message
-     from the person is going to be detransliterated.  */
+/* De-transliteration callback
+     If a person is in the de-transliteration list then each message
+     from the person is going to be de-transliterated.  */
 static gboolean
 reading_msg (PurpleAccount * account, char **sender,
              char **message, PurpleConversation * conv __unused,
@@ -289,7 +286,7 @@ plugin_remove_attached (PidginConversation * gtkconv)
 
 #define DETRANS_DESC \
         "/detrans <user-id>  marks a user and saves it in config "\
-        "with de-transliteration flag, whic assumes that user is "\
+        "with de-transliteration flag, which assumes that user is "\
         "writing in russian translit (see http://en.wikipedia.org"\
         "/wiki/Translit) for more details.\n\n"\
         "All the messages from the marked user are going to be tr"\
@@ -415,7 +412,8 @@ static PurplePluginInfo info = {
   NULL,                                 /* summary              */
   NULL,                                 /* description          */
   PLUGIN_AUTHOR,                        /* author               */
-  "http://www.google.com/",             /* website              */
+  "https://github.com/ashinkarov/"
+  "translit-plugin",                    /* website              */
   plugin_load,                          /* load                 */
   plugin_unload,                        /* unload               */
   NULL,                                 /* destroy              */

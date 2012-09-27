@@ -19,6 +19,7 @@
 #include <ctype.h>
 #include <stdio.h>
 
+#include "detrans.h"
 #include "trie.h"
 
 /* A structure to static replacements.  Used to store 
