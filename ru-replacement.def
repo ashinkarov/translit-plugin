@@ -1,0 +1,51 @@
+/* Copyright (c) 2010-2012, Artem Shinkarov <artyom.shinkaroff@gmail.com>
+  
+   Permission to use, copy, modify, and/or distribute this software for any
+   purpose with or without fee is hereby granted, provided that the above
+   copyright notice and this permission notice appear in all copies.
+  
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+   WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+   ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.  */
+
+INPUT ("shh", "щ")
+INPUT ("zh", "ж")
+INPUT ("yu", "ю")
+INPUT ("yo", "ё")
+INPUT ("ya", "я")
+INPUT ("y'", "ы")
+INPUT ("sh", "ш")
+INPUT ("e'", "э")
+/* Don't use this variant of "ц"
+   INPUT ("cz", "ц")  */
+INPUT ("ch", "ч")
+INPUT ("''", "ъ")
+INPUT ("w", "щ")
+INPUT ("c", "ц")
+INPUT ("z", "з")
+INPUT ("x", "х")
+INPUT ("v", "в")
+INPUT ("u", "у")
+INPUT ("t", "т")
+INPUT ("s", "с")
+INPUT ("r", "р")
+INPUT ("p", "п")
+INPUT ("o", "о")
+INPUT ("n", "н")
+INPUT ("m", "м")
+INPUT ("l", "л")
+INPUT ("k", "к")
+INPUT ("j", "й")
+INPUT ("i", "и")
+INPUT ("h", "х")
+INPUT ("g", "г")
+INPUT ("f", "ф")
+INPUT ("e", "е")
+INPUT ("d", "д")
+INPUT ("b", "б")
+INPUT ("a", "а")
+INPUT ("'", "ь")

@@ -1,0 +1,54 @@
+/* Copyright (c) 2010-2012, Artem Shinkarov <artyom.shinkaroff@gmail.com>
+  
+   Permission to use, copy, modify, and/or distribute this software for any
+   purpose with or without fee is hereby granted, provided that the above
+   copyright notice and this permission notice appear in all copies.
+  
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+   WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+   ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+   WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+   ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+   OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.  */
+
+/* This list must be sorted by column 1 in order
+   to allow binary search on it.  */
+
+/* This is not a mistake, but some stupidity of the unicode.  */
+INPUT ("ё", "Ё")
+
+/* The rest of the alphabet make much more sense.  */ 
+INPUT ("а", "А")
+INPUT ("б", "Б")
+INPUT ("в", "В")
+INPUT ("г", "Г")
+INPUT ("д", "Д")
+INPUT ("е", "Е")
+INPUT ("ж", "Ж")
+INPUT ("з", "З")
+INPUT ("и", "И")
+INPUT ("й", "Й")
+INPUT ("к", "К")
+INPUT ("л", "Л")
+INPUT ("м", "М")
+INPUT ("н", "Н")
+INPUT ("о", "О")
+INPUT ("п", "П")
+INPUT ("р", "Р")
+INPUT ("с", "С")
+INPUT ("т", "Т")
+INPUT ("у", "У")
+INPUT ("ф", "Ф")
+INPUT ("х", "Х")
+INPUT ("ц", "Ц")
+INPUT ("ч", "Ч")
+INPUT ("ш", "Ш")
+INPUT ("щ", "Щ")
+INPUT ("ъ", "Ъ")
+INPUT ("ы", "Ы")
+INPUT ("ь", "Ь")
+INPUT ("э", "Э")
+INPUT ("ю", "Ю")
+INPUT ("я", "Я")
+
