@@ -1,8 +1,9 @@
-Translit plugin for pidgin
-==========================
+Translit plugin for [pidgin](http://www.pidgin.im)
+==================================================
 
 This is a pidgin plugin for
-1. De-transliteraion of the russian messages in ISO-9 translit.
+
+1. De-transliteraion of russian messages in ISO-9 translit.
 2. Providing a keymap inside the piging conversations.
 
 
@@ -14,10 +15,10 @@ In order to build a plugin, you have to have:
 * GTK libraries and GLib-2.0
 * Headers for pango, cairo, atk, gdk-pixbuf
 
-After that run `make` and copy `translit.so` into `~/.purple/plugins`.  On
+After that run `make` and copy `translit.so` to `~/.purple/plugins`.  On
 the next start of pidgin, in plugins section you should see a plugin called
 `Translit tools`; enable it, and read help for `/detrans`, `/nodetrans`,
-`/rus` and `/norus`.
+`/rus` and `/norus` commands.
 
 
 How does it work?
@@ -35,18 +36,20 @@ retrieved bu analyzing a russian dictionary of hunspell.  Consider russian
 word `ушла` in a transliterated fashion -- `ushla` -- it can be decoded by
 simple per-letter decoding; so far, so good.  Now let's look at `сходить`
 -- `shodit'`; any naiive decoder would decode it as `шодить`, which of
-course is not what you want.  In order to overcome this, one has to apply a
-set of rules to recognize such a patterns.  These rules can be found in the
+course is wrong.  In order to overcome this, one has to apply a
+set of rules to recognize such patterns.  These rules can be found in the
 file called `ru-special-words.def`.  `INPUT (a, b)` means that while
 de-transliteration `a` is going to be replaced with `b`.  The longest-match
 principle is used while searching for the replacement candidate.
 
 There are two more files involved in the decoding process:
+
 1. `ru-replacement.def` which is just ISO-9 table
 2. `ru-capital-letters.def` which is a table for replacing
     small russian letter with capital.
 
-As this table can be considerably large, we are using trie data structure
+As this table can be considerably large, we are using a 
+[trie data structure](https://github.com/ashinkarov/trie)
 for fast matching.  It works considerably well -- 4 Mb can be
 detransliterated in 0.2 seconds on core i5.
 
@@ -58,9 +61,10 @@ De-transliteration works outside the plugin context, and one can compile
 from `stdin` and outputs decoded version on the `stdout`.
 
 `detrans-file` binary which can be built with `make detrans-binary` accepts
-a file wher each line is tab-separated correct russian word and
+a file where each line is tab-separated correct russian word and
 transliterated version of it, and the binary will print out those pairs
-where de-transliteration wouldn't match the original.
+where de-transliteration wouldn't match the original.  As an example of such
+a file see `misc/ru-words-tr.txt`.
 
 
 Todo
@@ -71,6 +75,9 @@ Todo
  
 * One can put some effort in making the tool aware of encodings, which may 
   make it work a wee bit faster.
+
+* The only word that currently fails is `pasha`.  It is being decoded as 
+  `пасха`, not `паша`.  Seems to be really non-trivial task to resolve it.
 
 * Testing :)
 
