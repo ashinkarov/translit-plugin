@@ -1,9 +1,9 @@
 /* Copyright (c) 2010-2012, Artem Shinkarov <artyom.shinkaroff@gmail.com>
-  
+
    Permission to use, copy, modify, and/or distribute this software for any
    purpose with or without fee is hereby granted, provided that the above
    copyright notice and this permission notice appear in all copies.
-  
+
    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
    WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
    MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
@@ -11,7 +11,7 @@
    WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
    ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
    OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.  */
-   
+
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +22,7 @@
 #include "detrans.h"
 #include "trie.h"
 
-/* A structure to static replacements.  Used to store 
+/* A structure to static replacements.  Used to store
    correspondence between russian small and capital
    letters.  */
 struct symbol
@@ -38,7 +38,7 @@ struct symbol
 static struct trie *detrans_trie = NULL;
 
 
-/* List of russian words, attached to the DETRANS_TRIE.  We 
+/* List of russian words, attached to the DETRANS_TRIE.  We
    allocate it in a separate array, as trie doesn't know that
    we keep pointers as an attached info, so it wouldn't free it.
    XXX We can teach trie free-ing function of course, but
@@ -54,7 +54,7 @@ static size_t detrans_size = 32, detrans_pos = 0;
    we need this table.
 
    XXX Keep in mind, that in utf-8 a letter may be longer than
-       sizeof (char), so we use strings here.  Again, one may 
+       sizeof (char), so we use strings here.  Again, one may
        use ints, and do the encoding, but for the time being
        we do not do that.   */
 static const struct symbol ru_cap[] = {
@@ -68,7 +68,7 @@ static size_t ru_cap_length = sizeof (ru_cap) / sizeof (struct symbol);
 
 /* Length of one russian leetter in bytes.
    XXX We assume that all the russian letters have the same length,
-       it is true in utf-8.  If it doesn't hold on your system, 
+       it is true in utf-8.  If it doesn't hold on your system,
        please adjust the binary search on RU_CAP.  */
 static size_t ru_cap_str_length;
 
@@ -215,11 +215,11 @@ trie_match_max (struct trie_match_info tl,
 
   return trie_match_max ((struct trie_match_info)
 			 {
-                           .trie=child->next, 
+                           .trie=child->next,
                            .last= child->last,
                            .len = tl.len + 1
-                         }, 
-                         last_success, 
+                         },
+                         last_success,
                          &word[1]);
 }
 
@@ -237,7 +237,7 @@ remove_apostrophes (const char *in)
       *retptr++ = '\'', in += 6;
     else
       *retptr++ = *in++;
-  
+
   *retptr = '\0';
   return ret;
 }
@@ -266,13 +266,14 @@ detrans (char *inp)
 	  continue;
 	}
       /* -- Naiive attempt to save URLs.  */
-      else if (strncmp (in, "http://", 7) == 0
-	       || strncmp (in, "www.", 4) == 0)
+      else if (!strncmp (in, "http://", 7)
+	       || !strncmp (in, "https://", 8)
+	       || !strncmp (in, "www.", 4))
 	{
 	  copyuntil (in, outptr, ' ');
 	  continue;
 	}
-      /* -- &xxxx; encoded symbols. 
+      /* -- &xxxx; encoded symbols.
          XXX could it be that we will have '&' without
          terminating ';'?  Normally it doesn't happen
          but who knows...   */
@@ -343,15 +344,15 @@ main (int argc, char *argv[])
         fprintf (stderr, "usage: %s <input-string>\n", argv[0]);
         goto out;
       }
-      
+
     xtrans = detrans (argv[1]);
     fprintf (stdout, "xdetrans '%s' = '%s'\n", argv[1], xtrans);
     free (xtrans);
-  
+
   #elif defined (_READ_FROM_FILE)
     FILE *f;
     char in_ru[256], in_tr[256];
-    
+
     if (argc < 2)
       {
         fprintf (stderr, "usage: %s <file-name>\n", argv[0]);
@@ -359,7 +360,7 @@ main (int argc, char *argv[])
       }
 
      f = fopen (argv[1], "r");
-  
+
      while (fscanf (f, "%s\t%s", in_ru, in_tr) != EOF)
        {
          char *out = detrans (in_tr);
