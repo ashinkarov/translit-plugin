@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2012, Artem Shinkarov <artyom.shinkaroff@gmail.com>
+# Copyright (c) 2010-2015, Artem Shinkarov <artyom.shinkaroff@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -12,7 +12,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-BINARY  := translit
+BINARY  := pidgin-detrans
 INCLUDE := -I/usr/include/libpurple \
 	   -I/usr/include/glib-2.0 \
 	   -I/usr/lib/glib-2.0/include \
@@ -30,31 +30,40 @@ DETRANS_DEPS  :=  ru-replacement.def ru-special-words.def \
 TRIE_DEPS     :=  trie.h
 TRANSLIT_DEPS :=  detrans.h
 
-all: trans
+CFLAGS := -Wall -Wextra -std=gnu99 -march=native -mtune=native
+CDEFS := -D_DEFAULT_SOURCE -D_GNU_SOURCE -D_BSD_SOURCE
+
+
+all: $(BINARY).so weechat-detrans.so
 
 detrans-input: detrans.c trie.c $(DETRANS_DEPS) $(TRIE_DEPS)
-	$(CC) -std=c99 -Wall -Wextra -pedantic -D_GNU_SOURCE -D_BSD_SOURCE \
-	-D_DETRANS_BINARY -D_CMD_TOOL -o $@ detrans.c trie.c 
+	$(CC) $(CFLAGS)  $(CDEFS) \
+	-D_DETRANS_BINARY -D_CMD_TOOL -o $@ detrans.c trie.c
 
 detrans-file: detrans.c trie.c $(DETRANS_DEPS) $(TRIE_DEPS)
-	$(CC) -std=c99 -Wall -Wextra -pedantic -D_GNU_SOURCE -D_BSD_SOURCE \
+	$(CC) $(CFLAGS) $(CDEFS) \
 	-D_DETRANS_BINARY -D_READ_FROM_FILE -o $@ detrans.c trie.c
 
 
-trans: $(BINARY).so
-%.so:%.o
+$(BINARY).so: translit.o detrans.o trie.o
 	$(CC) -shared -fpic -lglib-2.0 -lpurple -o $@ $^
 
 %.o:%.c
-	$(CC) $(INCLUDE) -D_GNU_SOURCE  -D_BSD_SOURCE -fpic -O3 -std=c99 \
-	-Wall -Wextra  -pedantic -c -o $@ $<
+	$(CC) $(CFLAGS) $(CDEFS) -fPIC -O3 $(INCLUDE) -c -o $@ $<
 
 translit.o: $(TRANSLIT_DEPS)
 detrans.o: $(DETRANS_DEPS)
 trie.o: $(TRIE_DEPS)
-$(BINARY).so: translit.o detrans.o trie.o
+
+weechat-detrans.o: weechat-detrans.c detrans.h
+	$(CC) $(CFLAGS) -fPIC $(CDEFS) \
+        $(shell pkg-config --cflags weechat) -c -o $@ $<
+
+weechat-detrans.so: weechat-detrans.o detrans.o trie.o
+	$(CC) -shared -fPIC -o $@ $^
+
 
 clean:
-	$(RM) $(BINARY).so *.o  detrans-input  detrans-file
+	$(RM) $(BINARY).so weechat-detrans.so *.o  detrans-input  detrans-file
 
 
