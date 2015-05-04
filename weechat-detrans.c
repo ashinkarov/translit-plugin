@@ -31,7 +31,6 @@ WEECHAT_PLUGIN_LICENSE ("ISC");
 struct t_weechat_plugin *  weechat_plugin = NULL;
 struct t_hook *  detrans_hook = NULL;
 
-const char *  detrans_user = "posobie@gmail.com";
 static char **  detrans_users = NULL;
 size_t detrans_users_len = 0;
 
@@ -40,7 +39,7 @@ static inline int
 user_in_detrans_users (const char *  user)
 {
   for (size_t i = 0; i < detrans_users_len; i++)
-    if (!strcmp (user, detrans_users[i]))
+    if (!strncmp (user, detrans_users[i], strlen (detrans_users[i])))
       return 1;
 
   return 0;
@@ -68,7 +67,7 @@ detrans_cb (void *  data, const char *  modifier,
 
   sender += 1;
 
-  if (user_in_detrans_users (detrans_user))
+  if (user_in_detrans_users (sender))
     {
       char *  msg_body = strchr (message + 1, ':');
       if (!msg_body)
