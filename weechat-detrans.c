@@ -47,9 +47,10 @@ user_in_detrans_users (const char *  user)
 
 
 char *
-detrans_cb (void *  data, const char *  modifier,
+detrans_cb (const void *  pointer, void *  data, const char *  modifier,
 	    const char *  modifier_data, const char *  message)
 {
+  (void) pointer;
   (void) data;
   (void) modifier;
   (void) modifier_data;
@@ -147,8 +148,10 @@ load_detrans_users (const char *users)
 
 
 int
-detrans_users_config_cb (void *  data, const char *  option, const char *  value)
+detrans_users_config_cb (const void *  pointer, void *  data, 
+                         const char *  option, const char *  value)
 {
+  (void) pointer;
   (void) data;
   (void) option;
 
@@ -173,8 +176,8 @@ weechat_plugin_init (struct t_weechat_plugin *  plugin, int argc, char *  argv[]
   weechat_printf (NULL, "Hello from %s plugin!",
 		  weechat_plugin_get_name (plugin));
 
-  weechat_hook_config ("plugins.var.detrans.users", &detrans_users_config_cb,
-		       NULL);
+  weechat_hook_config ("plugins.var.detrans.users", &detrans_users_config_cb, 
+                       &detrans_users_config_cb, NULL);
 
   struct t_config_option *  option = weechat_config_get ("plugins.var.detrans.users");
   const char *  detrans_users_opt = NULL;
@@ -197,7 +200,7 @@ weechat_plugin_init (struct t_weechat_plugin *  plugin, int argc, char *  argv[]
     weechat_printf (NULL, "%s: user (%zu) [%s]", PLUGIN_NAME, i,
 		    detrans_users[i]);
 
-  detrans_hook = weechat_hook_modifier ("irc_in2_privmsg", &detrans_cb, NULL);
+  detrans_hook = weechat_hook_modifier ("irc_in2_privmsg", &detrans_cb, &detrans_cb, NULL);
 
   return WEECHAT_RC_OK;
 }
