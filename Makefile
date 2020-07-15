@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2016, Artem Shinkarov <artyom.shinkaroff@gmail.com>
+# Copyright (c) 2010-2020, Artem Shinkarov <artyom.shinkaroff@gmail.com>
 #
 # Permission to use, copy, modify, and/or distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -14,16 +14,8 @@
 
 BINARY  := pidgin-detrans
 INCLUDE := -I/usr/include/libpurple \
-	   -I/usr/include/glib-2.0 \
-	   -I/usr/lib/glib-2.0/include \
-	   -I/usr/lib/gtk-2.0 \
-	   -I/usr/lib/gtk-2.0/include \
 	   -I/usr/include/pidgin \
-	   -I/usr/include/gtk-2.0/ \
-	   -I/usr/include/pango-1.0 \
-	   -I/usr/include/cairo  \
-	   -I/usr/include/atk-1.0 \
-	   -I/usr/include/gdk-pixbuf-2.0
+	   $(shell pkg-config --cflags glib-2.0 gtk+-2.0)
 
 DETRANS_DEPS  :=  ru-replacement.def ru-special-words.def \
 		  ru-capital-letters.def trie.h detrans.h
